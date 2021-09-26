@@ -16,7 +16,8 @@ var grid;
 
 (function buildGrid() {
     grid = new Array(columns).fill(null)
-        .map(()=> new Array(rows).fill(0));
+        .map(()=> new Array(rows).fill(null)
+            .map(()=> Math.floor(Math.random() * 2)));
     return grid;
 })();
 
@@ -24,9 +25,12 @@ function render(grid) {
     for (let x = 0; x < columns; x++) {
         for (let y = 0; y < rows; y++) {
             var cell = grid[x][y];
-
             ctx.fillStyle = '#000';
-            ctx.strokeRect(x*columns, y*rows, columns, rows);
+            if (cell == 1){
+                ctx.fillRect(x*columns, y*rows, columns, rows)
+            } else {
+                ctx.strokeRect(x*columns, y*rows, columns, rows);
+            }
         }
     }
 };
