@@ -1,3 +1,4 @@
+var button = document.querySelector('button');
 var canvas = document.querySelector('canvas');
 var ctx;
 if (canvas.getContext) {
@@ -25,8 +26,9 @@ function render(grid) {
             var cell = grid[x][y];
 
             ctx.fillStyle = '#000';
-            ctx.fillRect(x*columns,y*rows,columns, rows);
+            ctx.strokeRect(x*columns, y*rows, columns, rows);
         }
     }
-}
+};
+$('button').on('click',()=> render(grid));
 
