@@ -1,6 +1,5 @@
 var button = document.querySelector('button');
 var canvas = document.querySelector('canvas');
-var size = $('#universe-size').val();
 var columns, ctx, grid, newGeneration, rows;
 
 if (canvas.getContext) {
@@ -11,12 +10,13 @@ if (canvas.getContext) {
  
 var resolution = 10;
 
-
-function buildGrid() { 
-    canvas.width = $('#universe-size').val();
+function initValues(savedValues) {
+    canvas.width = savedValues || $('#universe-size').val();
     canvas.height = canvas.width;   
     columns = canvas.width / resolution;
     rows = canvas.height / resolution;
+}
+function buildGrid() { 
     grid = new Array(columns).fill(null)
         .map(()=> new Array(rows).fill(null)
             .map(()=> Math.floor(Math.random() * 2)));
@@ -25,17 +25,15 @@ function renderGrid(grid) {
     for (let x = 0; x < columns; x++) {
         for (let y = 0; y < rows; y++) {
             var cell = grid[y][x];
-            ctx.rect(x*columns, y*rows, columns, rows);
-            
+           // ctx.rect(x*columns, y*rows, columns, rows);
+            ctx.strokeRect(x*resolution, y*resolution, resolution, resolution);
             if (cell == 1) {
                 ctx.fillStyle = 'black';
                 ctx.fillRect(x*resolution, y*resolution, resolution, resolution);  
-                ctx.strokeRect(x*resolution, y*resolution, resolution, resolution);
+                
             } else {
                 ctx.fillStyle = 'white'
-                ctx.fillRect(x*resolution, y*resolution, resolution, resolution);
-                ctx.strokeRect(x*resolution, y*resolution, resolution, resolution);
-                
+                ctx.fillRect(x*resolution, y*resolution, resolution, resolution);                
             }
         }
     }
@@ -70,14 +68,7 @@ function evolution() {
                 newGeneration[y][x] = 0;
               } else if (cell === 0 && numOfNeighbors === 3) {
                 newGeneration[y][x] = 1;
-            }
-            // if (cell == 1 && numOfNeighbors != 2 ||
-            //     cell == 1 && numOfNeighbors != 3) {
-            //         newGeneration[y][x] = 0;
-            // } else if (cell == 0 && numOfNeighbors == 3) {
-            //         newGeneration[y][x] = 1;
-            // }
-                    
+            }         
         }
     }
     grid = newGeneration.map(arr => [...arr]);
@@ -91,8 +82,10 @@ function updateGrid() {
 }
 //requestAnimationFrame(updateGrid);
 function showGrid () {
+    initValues();
     buildGrid();
-    renderGrid(grid); 
+    renderGrid(grid);
+    updateGrid() 
 }
 
 function save() {
@@ -100,10 +93,13 @@ function save() {
 }
 function load() {
     var savedLife = localStorage.getItem('gameOfLife');
+    grid = JSON.parse(savedLife);
+    initValues(grid.length * 10);
+    renderGrid(grid);
+    updateGrid() 
 }
 
-$('#build').on('click',()=> showGrid());
-$('#evolve').on('click',()=> updateGrid());
+$('#evolve').on('click', ()=> showGrid());
 $('#save').on('click', ()=> save());
 $('#load').on('click', ()=> load());
 // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
