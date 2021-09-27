@@ -94,9 +94,18 @@ function showGrid () {
     buildGrid();
     renderGrid(grid); 
 }
+
+function save() {
+    localStorage.setItem('gameOfLife', JSON.stringify(grid));
+}
+function load() {
+    var savedLife = localStorage.getItem('gameOfLife');
+}
+
 $('#build').on('click',()=> showGrid());
 $('#evolve').on('click',()=> updateGrid());
-
+$('#save').on('click', ()=> save());
+$('#load').on('click', ()=> load());
 // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 // Any live cell with two or three live neighbours lives on to the next generation.
 // Any live cell with more than three live neighbours dies, as if by overpopulation.

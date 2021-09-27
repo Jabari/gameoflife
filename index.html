@@ -1,11 +1,21 @@
 <head>
-    
+    <style>
+         #button-container {
+              display: flex;
+              flex-direction: row;
+         }
+    </style>
 </head>
 <body>
      <canvas></canvas>
-     <input type="number" value="1000" min="100" max="100000000000" step="10" id="universe-size"/>
-     <button id="build">Build Grid</button>
-     <button id="evolve">Start Evolution</button>
+     <div id="button-container">
+          <input type="number" value="1000" min="100" max="100000000000" step="10" id="universe-size"/>
+          <button id="build">Build Grid</button>
+          <button id="evolve">Start Evolution</button>
+          <button id="load">Load</button>
+          <button id="save">Save</button>
+     </div>
+    
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js" integrity="sha512-6ORWJX/LrnSjBzwefdNUyLCMTIsGoNP6NftMy2UAm1JBm6PRZCO1d7OHBStWpVFZLO+RerTvqX/Z9mBFfCJZ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
      <script type="text/javascript" src="index.js"></script>    
 </body>
